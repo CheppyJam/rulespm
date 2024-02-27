@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  discordId     String  @map("discord_id")
+  isAdmin       Boolean @default(false) @map("is_admin")
+  minecraftUUID String  @map("mincraft_uuid")
+  username      String  @map("username")
+
+  posts Post[]
+}
+
+model Post {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content    String
+  title      String
+  authorId   String   @map("author_id") @db.Uuid
+  categoryId String   @map("category_id") @db.Uuid
+  createdAt  DateTime @default(now())
+
+  author   User     @relation(references: [id], fields: [authorId])
+  category Category @relation(references: [id], fields: [categoryId])
+}
+
+model Category {
+  id    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  posts Post[]
+  title String
+}

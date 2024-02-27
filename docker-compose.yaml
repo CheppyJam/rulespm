@@ -1,0 +1,30 @@
+version: '3'
+
+networks:
+  rulespm_backend:
+
+services:
+  postgres:
+    image: postgres:16.1-alpine
+    networks:
+      - rulespm_backend
+    ports:
+      - '5480:5432'
+    env_file:
+      - ./.envs/.postgres
+    volumes:
+      - ../rulespm/pg-data:/var/lib/postgresql/data
+  backend:
+    build:
+      context: .
+      dockerfile: ./compose/Dockerfile
+    networks:
+      - rulespm_backend
+    ports:
+      - '8100:8080'
+    env_file:
+      - ./.envs/.backend
+      - ./.envs/.postgres
+    command: sh /entrypoint
+    depends_on:
+      - postgres

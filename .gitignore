@@ -1,0 +1,6 @@
+spmini
+node_modules/
+dist/*
+pg-data/*
+.env
+.envs/*
