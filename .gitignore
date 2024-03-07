@@ -1,6 +1,6 @@
 spmini
 node_modules/
-dist/*
+*/dist/*
 pg-data/*
 .env
 .envs/*
