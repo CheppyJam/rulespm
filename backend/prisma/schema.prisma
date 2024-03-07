@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id            String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  discordId     String  @map("discord_id")
+  discordId     String  @map("discord_id") @unique
   isAdmin       Boolean @default(false) @map("is_admin")
   minecraftUUID String  @map("mincraft_uuid")
   username      String  @map("username")

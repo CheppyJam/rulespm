@@ -13,11 +13,11 @@ services:
     env_file:
       - ./.envs/.postgres
     volumes:
-      - ../rulespm/pg-data:/var/lib/postgresql/data
+      - /pg-data:/var/lib/postgresql/data
   backend:
     build:
       context: .
-      dockerfile: ./compose/Dockerfile
+      dockerfile: ./backend/compose/Dockerfile
     networks:
       - rulespm_backend
     ports:

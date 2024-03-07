@@ -10,22 +10,22 @@ WORKDIR /app
 
 FROM base AS prod-deps
 
-COPY ./package.json ./
-COPY ./pnpm-lock.yaml ./
+COPY ./backend/package.json ./
+COPY ./backend/pnpm-lock.yaml ./
 
 RUN pnpm install --prod --frozen-lockfile
 
 FROM base AS builder
 
-COPY ./package.json ./
-COPY ./pnpm-lock.yaml ./
+COPY ./backend/package.json ./
+COPY ./backend/pnpm-lock.yaml ./
 
 RUN pnpm install --frozen-lockfile
 
-COPY ./prisma ./
+COPY ./backend/prisma ./
 RUN pnpm generate
 
-COPY . .
+COPY ./backend .
 
 RUN pnpm build
 
@@ -39,7 +39,7 @@ COPY --from=builder /app/dist /app/dist
 
 RUN pnpm generate
 
-COPY ./compose/entrypoint /entrypoint
+COPY ./backend/compose/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
 RUN chmod +x /entrypoint
 
